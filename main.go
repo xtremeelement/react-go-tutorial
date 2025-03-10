@@ -12,6 +12,7 @@ type Todo struct {
 	Completed bool   `json: "completed"`
 	Body      string `json: "body"`
 }
+
 //testing some stuff 3
 
 func main() {
@@ -20,29 +21,30 @@ func main() {
 
 	todos := []Todo{}
 
-	test()
+	//test()
 
-	app.Get("/api/todos", func(c *fiber.Ctx) error {
-		return c.Status(200).JSON(todos)
+	app.Get("/api/todos", func(req *fiber.Ctx) error {
+		return req.Status(200).JSON(todos)
 	})
 
-	app.Post("/api/todos", func(c *fiber.Ctx) error {
+	app.Post("/api/todos", func(req *fiber.Ctx) error {
 		todo := &Todo{}
 
 		fmt.Println(todo, &todo)
 
-		if err := c.BodyParser(todo); err != nil {
+		if err := req.BodyParser(todo); err != nil {
 			return err
 		}
 
 		if todo.Body == "" {
-			return c.Status(400).JSON(fiber.Map{"error": "Todo body is required"})
+			return req.Status(400).JSON(fiber.Map{"error": "Todo body is required"})
 		}
 
+		fmt.Println("Test", todo)
 		todo.ID = len(todos) + 1
 		todos = append(todos, *todo)
 
-		return c.Status(201).JSON(todo)
+		return req.Status(201).JSON(todo)
 
 	})
 
