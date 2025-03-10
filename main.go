@@ -12,6 +12,7 @@ type Todo struct {
 	Completed bool   `json: "completed"`
 	Body      string `json: "body"`
 }
+//testing some stuff 3
 
 func main() {
 	fmt.Println("Hi update 2")
